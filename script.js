@@ -44,6 +44,26 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Service Cards - Read More Toggle (Mobile Only)
+document.querySelectorAll('.read-more-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const serviceCard = this.closest('.service-card');
+        const isExpanded = serviceCard.classList.contains('expanded');
+        
+        // Toggle expanded class
+        serviceCard.classList.toggle('expanded');
+        
+        // Update button text
+        if (isExpanded) {
+            this.textContent = 'Read More';
+        } else {
+            this.textContent = 'Show Less';
+        }
+    });
+});
+
 // Optional: Add scroll animation for service items
 document.addEventListener('DOMContentLoaded', function() {
     const observerOptions = {
@@ -59,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
 
-    // Observe service items for animation (walang review ngayon)
+    // Observe service items for animation
     document.querySelectorAll('.service-item, .solution-item, .contact-item').forEach(item => {
         observer.observe(item);
     });
