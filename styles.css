@@ -16,7 +16,7 @@ body {
 /* Navigation - Original Size */
 nav {
     background-color: #2d4a8a;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem; /* Balanced height */
     display: flex;
     justify-content: space-between;
     align-items: center;
