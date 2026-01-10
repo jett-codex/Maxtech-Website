@@ -153,6 +153,10 @@ nav ul li a:hover::after { width: 80%; }
     opacity: 1;
     pointer-events: auto;
 }
+.hero-slider.show-arrows .slide-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
 .slide-nav:hover { background: rgba(0, 0, 0, 0.5); }
 .slide-nav.prev { left: 12px; }
 .slide-nav.next { right: 12px; }
@@ -370,9 +374,21 @@ footer p { font-size: 1rem; margin: 0; opacity: 0.9; font-weight: 300; }
     .banner-strip { padding: 1.25rem 1rem 1.5rem; }
     .banner-img { border-radius: 12px; }
 
-    /* Mobile: slightly visible arrows */
-    .slide-nav { width: 36px; height: 36px; opacity: 0.85; }
-    .hero-slider:hover .slide-nav { opacity: 1; }
+    /* Mobile: arrows hidden unless show-arrows class is added via touch */
+    .slide-nav {
+        width: 36px;
+        height: 36px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .hero-slider:hover .slide-nav {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .hero-slider.show-arrows .slide-nav {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 @media (max-width: 480px) {

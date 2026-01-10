@@ -51,12 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.service-item, .solution-item, .contact-item').forEach(item => observer.observe(item));
 });
 
-// Hero slideshow with autoplay and manual arrows
+// Hero slideshow with autoplay and manual arrows + touch/long-press reveal
 (function initHeroSlider() {
+    const slider = document.querySelector('.hero-slider');
     const slides = Array.from(document.querySelectorAll('.hero-slider .slide'));
     const prevBtn = document.querySelector('.slide-nav.prev');
     const nextBtn = document.querySelector('.slide-nav.next');
-    if (!slides.length || !prevBtn || !nextBtn) return;
+    if (!slider || !slides.length || !prevBtn || !nextBtn) return;
 
     let index = 0;
     let timer = null;
@@ -75,6 +76,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
     prevBtn.addEventListener('click', () => { goTo(index - 1); restart(); });
     nextBtn.addEventListener('click', () => { goTo(index + 1); restart(); });
+
+    // Touch + long-press handling for mobile
+    let startX = 0;
+    let longPressTimer = null;
+    let hideTimer = null;
+    const LONG_PRESS_MS = 350;
+    const HIDE_DELAY_MS = 1500;
+    const SWIPE_THRESHOLD = 40;
+    const MOVE_CANCEL = 10;
+
+    const showArrowsTemp = () => {
+        slider.classList.add('show-arrows');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => slider.classList.remove('show-arrows'), HIDE_DELAY_MS);
+    };
+
+    slider.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        longPressTimer = setTimeout(() => {
+            slider.classList.add('show-arrows');
+        }, LONG_PRESS_MS);
+    }, { passive: true });
+
+    slider.addEventListener('touchmove', (e) => {
+        const moveX = e.touches[0].clientX;
+        if (Math.abs(moveX - startX) > MOVE_CANCEL) {
+            clearTimeout(longPressTimer);
+        }
+    }, { passive: true });
+
+    slider.addEventListener('touchend', (e) => {
+        clearTimeout(longPressTimer);
+        const endX = (e.changedTouches && e.changedTouches[0].clientX) || startX;
+        const delta = endX - startX;
+
+        // Swipe navigation
+        if (Math.abs(delta) > SWIPE_THRESHOLD) {
+            if (delta > 0) {
+                goTo(index - 1);
+            } else {
+                goTo(index + 1);
+            }
+            restart();
+            showArrowsTemp();
+        } else {
+            // If long-press had shown arrows, keep briefly then hide
+            if (slider.classList.contains('show-arrows')) {
+                showArrowsTemp();
+            }
+        }
+    });
+
+    slider.addEventListener('touchcancel', () => {
+        clearTimeout(longPressTimer);
+    });
 
     restart();
 })();
