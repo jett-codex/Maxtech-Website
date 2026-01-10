@@ -51,14 +51,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.service-item, .solution-item, .contact-item').forEach(item => observer.observe(item));
 });
 
-// Hero slideshow (auto-play)
+// Hero slideshow with autoplay and manual arrows
 (function initHeroSlider() {
     const slides = Array.from(document.querySelectorAll('.hero-slider .slide'));
-    if (!slides.length) return;
+    const prevBtn = document.querySelector('.slide-nav.prev');
+    const nextBtn = document.querySelector('.slide-nav.next');
+    if (!slides.length || !prevBtn || !nextBtn) return;
+
     let index = 0;
-    setInterval(() => {
+    let timer = null;
+    const INTERVAL = 4500;
+
+    const goTo = (newIndex) => {
         slides[index].classList.remove('active');
-        index = (index + 1) % slides.length;
+        index = (newIndex + slides.length) % slides.length;
         slides[index].classList.add('active');
-    }, 4500);
+    };
+
+    const restart = () => {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(index + 1), INTERVAL);
+    };
+
+    prevBtn.addEventListener('click', () => { goTo(index - 1); restart(); });
+    nextBtn.addEventListener('click', () => { goTo(index + 1); restart(); });
+
+    restart();
 })();

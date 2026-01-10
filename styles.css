@@ -130,6 +130,33 @@ nav ul li a:hover::after { width: 80%; }
     border: 0;
 }
 
+/* Slider nav arrows */
+.slide-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.25s ease, background 0.25s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+.hero-slider:hover .slide-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
+.slide-nav:hover { background: rgba(0, 0, 0, 0.5); }
+.slide-nav.prev { left: 12px; }
+.slide-nav.next { right: 12px; }
+
 /* Common Section Styles */
 .section-container { padding: 5rem 2rem; width: 100%; position: relative; }
 .section-container h2 {
@@ -193,6 +220,24 @@ nav ul li a:hover::after { width: 80%; }
 .service-list li::before { content: '•'; position: absolute; left: 0; color: #2d4a8a; font-size: 1.5rem; }
 .service-card:hover .service-list li::before { color: #f39c12; }
 .read-more-btn { display: none; }
+
+/* Banner strip between Services and Contact */
+.banner-strip {
+    width: 100%;
+    padding: 1.5rem 2rem 1.75rem; /* balanced spacing */
+    display: flex;
+    justify-content: center;
+    background: transparent;
+}
+.banner-img {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    object-fit: cover;
+    display: block;
+}
 
 /* Contact */
 #contact { background-color: white; width: 100%; }
@@ -261,12 +306,18 @@ footer p { font-size: 1rem; margin: 0; opacity: 0.9; font-weight: 300; }
     nav ul li a { font-size: 1.1rem; display: block; padding: 0.8rem 0; }
 
     .hero { padding: 2.2rem 1rem; }
-    .hero-card { border-radius: 12px; }
-    .hero-slider { min-height: 260px; }
-    .hero-right { padding: 1.6rem; }
-    .hero-text h1 { font-size: 1.9rem; text-align: center; }
-    .hero-text p { text-align: center; }
-    .hero-map iframe { height: 230px; }
+    .hero-card { border-radius: 12px; grid-template-columns: 1fr; }
+    .hero-right {
+        order: 1;
+        padding: 1.6rem 1.2rem 1rem;
+        align-items: center;
+        text-align: center;
+    }
+    .hero-text h1 { font-size: 1.9rem; text-align: center; margin-bottom: 1rem; }
+    .hero-text p { font-size: 1.05rem; text-align: center; margin: 0.75rem 0 0; }
+    .hero-left { order: 2; background: #f7f9fb; }
+    .hero-slider { min-height: 320px; border-radius: 12px; overflow: hidden; margin: 0 0 0.75rem; }
+    .hero-map { display: none; } /* Hide map on mobile */
 
     .section-container { padding: 2.5rem 1rem; }
     .section-container h2 { font-size: 2.2rem; text-align: center; padding-left: 0; }
@@ -314,6 +365,14 @@ footer p { font-size: 1rem; margin: 0; opacity: 0.9; font-weight: 300; }
     .service-card.expanded .read-more-btn { color: rgba(255, 255, 255, 0.7); }
 
     .contact-info-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+
+    /* Banner responsive tweak */
+    .banner-strip { padding: 1.25rem 1rem 1.5rem; }
+    .banner-img { border-radius: 12px; }
+
+    /* Mobile: slightly visible arrows */
+    .slide-nav { width: 36px; height: 36px; opacity: 0.85; }
+    .hero-slider:hover .slide-nav { opacity: 1; }
 }
 
 @media (max-width: 480px) {
@@ -333,62 +392,4 @@ footer p { font-size: 1rem; margin: 0; opacity: 0.9; font-weight: 300; }
     .contact-details h3 { font-size: 1.3rem; }
     footer { padding: 1.5rem; }
     footer p { font-size: 0.9rem; }
-}
-
-/* Mobile layout (stacked) */
-@media (max-width: 768px) {
-    /* Hide map on mobile */
-    .hero-map {
-        display: none;
-    }
-
-    /* Stack hero content: title -> slideshow -> location text */
-    .hero-card {
-        grid-template-columns: 1fr;
-        border-radius: 14px;
-    }
-
-    .hero-right {
-        order: 1;
-        padding: 1.6rem 1.2rem 1rem;
-        align-items: center;
-        text-align: center;
-    }
-
-    .hero-text h1 {
-        font-size: 1.9rem;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    .hero-text p {
-        font-size: 1.05rem;
-        text-align: center;
-        margin: 0.75rem 0 0;
-    }
-
-    .hero-left {
-        order: 2;
-        background: #f7f9fb;
-    }
-
-    .hero-slider {
-        min-height: 320px;
-        border-radius: 12px;
-        overflow: hidden;
-        margin: 0 0 0.75rem;
-    }
-
-    /* Fine-tune hero padding/background */
-    .hero {
-        padding: 2rem 1rem 1.5rem;
-        background: #f8f9fa;
-    }
-}
-
-/* Extra small */
-@media (max-width: 480px) {
-    .hero-slider { min-height: 280px; }
-    .hero-text h1 { font-size: 1.7rem; }
-    .hero-text p { font-size: 1rem; }
 }
